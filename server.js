@@ -11,13 +11,13 @@ app.use(cookieParser());
 
 app.post('/login', (req, res) => {
   const sessionId = 'abc123';
-  res.cookie('session_id', sessionId);
-  res.cookie('auth_token', 'xyz', { maxAge: 86400000 });
+  res.cookie('session_id', sessionId, { httpOnly: true, sameSite: 'lax', secure: process.env.NODE_ENV === 'production' });
+  res.cookie('auth_token', 'xyz', { maxAge: 86400000, httpOnly: true, sameSite: 'lax', secure: process.env.NODE_ENV === 'production' });
   res.send('ok');
 });
 
 app.post('/logout', (req, res) => {
-  res.cookie('session_id', '', { maxAge: 0 });
+  res.cookie('session_id', '', { maxAge: 0, httpOnly: true, sameSite: 'lax', secure: process.env.NODE_ENV === 'production' });
   res.send('bye');
 });
 
