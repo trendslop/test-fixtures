@@ -1,0 +1,17 @@
+{
+  "name": "test-fixtures",
+  "version": "1.0.0",
+  "description": "Intentionally bad code for testing Trendslop. Do not deploy.",
+  "main": "server.js",
+  "private": true,
+  "dependencies": {
+    "express": "4.16.0",
+    "cors": "2.7.1",
+    "lodash": "3.10.1",
+    "axios": "0.18.0",
+    "jsonwebtoken": "7.4.0"
+  },
+  "scripts": {
+    "start": "node server.js"
+  }
+}
