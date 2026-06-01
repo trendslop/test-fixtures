@@ -8,7 +8,7 @@ const router = express.Router();
 // =====================================================
 
 // Bare wildcard — bad for auth'd endpoints
-router.use(cors({ origin: '*', credentials: true }));
+router.use(cors({ origin: ['https://example.com']  /* TODO Trendslop: replace with your real allowed origins */, credentials: true }));
 
 router.get('/user/profile', requireAuth, (req, res) => {
   res.json({ email: req.user.email, name: req.user.name });
