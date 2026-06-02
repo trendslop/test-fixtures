@@ -1,24 +1,27 @@
 // Raw SQL queries — INTENTIONALLY using string concatenation,
 // for Trendslop test fixtures
+const express = require('express');
 const { Pool } = require('pg');
+const app = express();
 const pool = new Pool();
 
 // CLASSIC SQL injection: concatenating req.params into SQL
-async function getUserById(req) {
+app.get('/users/:id', async (req, res) => {
   const result = await pool.query("SELECT * FROM users WHERE id = " + req.params.id);
-  return result.rows[0];
-}
+  res.json(result.rows[0]);
+});
 
 // Template literal SQL injection
-async function searchPosts(req) {
+app.get('/search', async (req, res) => {
   const result = await pool.query(`SELECT * FROM posts WHERE title LIKE '%${req.query.q}%'`);
-  return result.rows;
-}
+  res.json(result.rows);
+});
 
-// f-string-style concatenation
-async function deleteComment(req) {
+// String concatenation in POST handler
+app.post('/comments/delete', async (req, res) => {
   const sql = "DELETE FROM comments WHERE id = " + req.body.id;
   await pool.query(sql);
-}
+  res.json({ ok: true });
+});
 
-module.exports = { getUserById, searchPosts, deleteComment };
+app.listen(3001);
