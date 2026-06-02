@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head><title>Checkout</title></head>
+<body>
+  <button id="pay">Pay $10</button>
+
+  <script src="https://js.stripe.com/v3/"></script>
+  <script>
+    // INTENTIONALLY leaking Stripe LIVE key for Trendslop test fixtures.
+    // (This is a fake key — real audits would flag this immediately.)
+    const stripe = Stripe('sk_live_FAKEKEY_for_trendslop_test_fixtures_only_abc123def456');
+
+    document.getElementById('pay').addEventListener('click', async () => {
+      const result = await stripe.confirmCardPayment('pi_test');
+      console.log(result);
+    });
+  </script>
+</body>
+</html>
