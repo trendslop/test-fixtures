@@ -1,18 +1,22 @@
 <!DOCTYPE html>
 <html>
-<head><title>Checkout</title></head>
+<head><title>AI Chat</title></head>
 <body>
-  <button id="pay">Pay $10</button>
+  <button id="ask">Ask Claude</button>
 
-  <script src="https://js.stripe.com/v3/"></script>
   <script>
-    // INTENTIONALLY leaking Stripe LIVE key for Trendslop test fixtures.
-    // (This is a fake key — real audits would flag this immediately.)
-    const stripe = Stripe('sk_live_FAKEKEY_for_trendslop_test_fixtures_only_abc123def456');
+    // INTENTIONALLY leaking Anthropic key for Trendslop test fixtures.
+    // (This is a fake key for testing — real audits would flag this immediately.)
+    const ANTHROPIC_KEY = 'sk-ant-FAKEKEY-trendslop-test-fixtures-not-real-abcdef0123456789';
 
-    document.getElementById('pay').addEventListener('click', async () => {
-      const result = await stripe.confirmCardPayment('pi_test');
-      console.log(result);
+    document.getElementById('ask').addEventListener('click', async () => {
+      const resp = await fetch('https://api.anthropic.com/v1/messages', {
+        headers: { 'x-api-key': ANTHROPIC_KEY },
+        method: 'POST',
+        body: JSON.stringify({ model: 'claude-sonnet-4-5', max_tokens: 100, messages: [{role:'user',content:'hi'}] })
+      });
+      const data = await resp.json();
+      console.log(data);
     });
   </script>
 </body>
