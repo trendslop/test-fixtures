@@ -7,20 +7,20 @@ const pool = new Pool();
 
 // CLASSIC SQL injection: concatenating req.params into SQL
 app.get('/users/:id', async (req, res) => {
-  const result = await pool.query("SELECT * FROM users WHERE id = " + req.params.id);
+  const result = await pool.query("SELECT * FROM users WHERE id = $1", [req.params.id]);
   res.json(result.rows[0]);
 });
 
 // Template literal SQL injection
 app.get('/search', async (req, res) => {
-  const result = await pool.query(`SELECT * FROM posts WHERE title LIKE '%${req.query.q}%'`);
+  const result = await pool.query("SELECT * FROM posts WHERE title LIKE $1", ['%' + req.query.q + '%']);
   res.json(result.rows);
 });
 
 // String concatenation in POST handler
 app.post('/comments/delete', async (req, res) => {
-  const sql = "DELETE FROM comments WHERE id = " + req.body.id;
-  await pool.query(sql);
+  const sql = "DELETE FROM comments WHERE id = $1";
+  await pool.query(sql, [req.body.id]);
   res.json({ ok: true });
 });
 
